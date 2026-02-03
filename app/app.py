@@ -14,7 +14,7 @@ ui: FlaskUI = FlaskUI(app=app, server="flask", width=500, height=500)
 
 push_data = True
 
-com_port = "COM3"
+com_port = "COM6"
 
 ser = serial.Serial(com_port, 115200, timeout=1)
 
@@ -114,6 +114,8 @@ def train() -> Response:
 
     if request.method == "POST":
         is_available = request.get_json()["is_available"]
+        print(stand_dataset["state"]["filled"])
+        print(exercise_dataset["state"]["filled"])
         if stand_dataset["state"]["filled"] and exercise_dataset["state"]["filled"]:
             _, weights, bias = run.collect_and_train(
                 ser, stand_dataset, exercise_dataset

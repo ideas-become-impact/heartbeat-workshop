@@ -33,8 +33,8 @@ const options = {
       },
       y: {
         type: 'linear',
-        min: 400,
-        max: 600
+        min: 0,
+        max: 900        
       }
     },
     plugins: {
@@ -99,7 +99,7 @@ function update_chart(chart_number) {
                 charts.one.update()
                 time = new_data["time"];
                 raw_data = new_data["train"].flat(Infinity);
-                //                 console.log("made it through the pipeline!");
+                // console.log("made it through the pipeline!");
                 // console.log(time);
                 // console.log(raw_data);
                 let chart_data_format_y = raw_data.map(value => {
@@ -116,7 +116,7 @@ function update_chart(chart_number) {
                 let initial_val = total_stand_data.length > 0
                 if (initial_val) {
                     let final_obj = total_stand_data[total_stand_data.length - 1];
-                    // console.log(`total_stand_data);
+                    // console.log(total_stand_data);
                     let final_time = final_obj.x
                     arr_and_item = time.indexOf(final_time);
                     // console.log(arr_and_item);
@@ -129,6 +129,8 @@ function update_chart(chart_number) {
                     }
                     total_stand_data = chart_data_format;
                 }
+
+                console.log(chart_data_format)
 
                 // console.log(chart_data_format)
                                     // console.log(total_stand_data.concat(chart_data_format));

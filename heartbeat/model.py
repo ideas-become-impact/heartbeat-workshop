@@ -1,4 +1,5 @@
 import numpy as np
+from pprint import pprint
 
 
 def g(z):
@@ -22,9 +23,11 @@ def cost(y_hat, y):
     return np.sum(summed_losses)
 
 
-def train(X, y, n=[29, 30, 15, 1], L=3, alpha=0.1, epochs=2000): 
+def train(X, y, n=[29, 30, 15, 1], L=3, alpha=0.1, epochs=2000):
+    pprint(X)
+    pprint(y)
     m = X.shape[0]
-    A0 = X.T 
+    A0 = X.T
     Y = y.reshape(n[L], m)
 
     # Re-initialize weights and biases from scratch each time
