@@ -43,6 +43,10 @@ def get_heartbeat(ser: serial.Serial, data_holding_dict: dict, button_clicked: i
                 data_holding_dict["train"][-1].append(int(hb_parts[-1]))
                 if len(data_holding_dict["train"][-1]) == 29:
                     data_holding_dict["state"]["list_full"] = True
+                    if button_clicked == 1: # rest
+                        data_holding_dict["output"].append(0)
+                    elif button_clicked == 2: # exercise
+                        data_holding_dict["output"].append(1)
                 time.sleep(0.005)
 
             if data_holding_dict["state"]["list_full"]:
@@ -77,11 +81,11 @@ def get_heartbeat(ser: serial.Serial, data_holding_dict: dict, button_clicked: i
             else:
                 data_holding_dict["train"][i - 1] = data_holding_dict["train"][i]
 
-    # ideally make button_clicked an int/bool, depends on what's easier to get from frontend
-    if button_clicked == 1:  # resting clicked
-        data_holding_dict["output"].extend([0] * 10)
-    if button_clicked == 2:  # exercising clicked
-        data_holding_dict["output"].extend([1] * 10)
+    # # ideally make button_clicked an int/bool, depends on what's easier to get from frontend
+    # if button_clicked == 1:  # resting clicked
+    #     data_holding_dict["output"].extend([0] * 10)
+    # if button_clicked == 2:  # exercising clicked
+    #     data_holding_dict["output"].extend([1] * 10)
 
     return data_holding_dict
 
