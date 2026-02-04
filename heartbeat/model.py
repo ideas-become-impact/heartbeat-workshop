@@ -85,7 +85,7 @@ def train(X, y, n=[29, 30, 15, 1], L=3, alpha=0.1, epochs=2000):
 def predict(X_test, weights, biases):
     W1, W2, W3 = weights
     b1, b2, b3 = biases
-
+    X_test = np.array(X_test)
     A0 = X_test.T  # shape: features x samples
 
     # Feedforward
