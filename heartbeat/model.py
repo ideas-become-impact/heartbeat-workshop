@@ -24,8 +24,8 @@ def cost(y_hat, y):
 
 
 def train(X, y, n=[29, 30, 15, 1], L=3, alpha=0.1, epochs=2000):
-    pprint(X)
-    pprint(y)
+    # pprint(X)
+    # pprint(y)
     m = X.shape[0]
     A0 = X.T
     Y = y.reshape(n[L], m)

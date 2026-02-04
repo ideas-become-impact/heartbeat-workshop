@@ -21,17 +21,24 @@ def exercise_button_clicked(ser, training_dict):
 
 
 def collect_and_train(ser, stand_dataset, exercise_dataset):
-    rest_dict = rest_button_clicked(ser, stand_dataset)
-    exercise_dict = exercise_button_clicked(ser, exercise_dataset)
-    rest_train = rest_dict["train"]
-    rest_output = rest_dict["output"]
-    exercise_train = exercise_dict["train"]
-    exercise_output = exercise_dict["output"]
+    # rest_dict = rest_button_clicked(ser, stand_dataset)
+    # exercise_dict = exercise_button_clicked(ser, exercise_dataset)
+    # rest_train = rest_dict["train"]
+    # rest_output = rest_dict["output"]
+    # exercise_train = exercise_dict["train"]
+    # exercise_output = exercise_dict["output"]
+    # rest_samples = [s for s in rest_dict["train"] if len(s) == 29]
+    # exercise_samples = [s for s in exercise_dict["train"] if len(s) == 29]
 
-    train = sum(rest_train, []) + sum(exercise_train, [])
-    output = rest_output + exercise_output
-    print(train)
-    print(output)
+    print("stand_dataset:", stand_dataset)
+    rest_samples = [s[:29] for s in stand_dataset["train"] if len(s) >= 29]
+    exercise_samples = [s[:29] for s in exercise_dataset["train"] if len(s) >= 29]
+
+    train = rest_samples + exercise_samples
+    print("train:", train)
+
+    output = [0] * len(rest_samples) + [1] * len(exercise_samples)
+    print("output:", output)
 
     X = np.array(train)  # 10+10 samples, each 29 features
     y = np.array(output)  # 10+10 labels

@@ -43,14 +43,15 @@ def get_heartbeat(ser: serial.Serial, data_holding_dict: dict, button_clicked: i
                 data_holding_dict["train"][-1].append(int(hb_parts[-1]))
                 if len(data_holding_dict["train"][-1]) == 29:
                     data_holding_dict["state"]["list_full"] = True
-                    if button_clicked == 1: # rest
-                        data_holding_dict["output"].append(0)
-                    elif button_clicked == 2: # exercise
-                        data_holding_dict["output"].append(1)
+                    # if button_clicked == 1: # rest
+                    #     data_holding_dict["output"].append(0)
+                    # elif button_clicked == 2: # exercise
+                    #     data_holding_dict["output"].append(1)
                 time.sleep(0.005)
 
             if data_holding_dict["state"]["list_full"]:
                 data_holding_dict["train"].append([])
+                data_holding_dict["state"]["list_full"] = False
             # while count <= 11:
             #     if ser.in_waiting > 0:
             #         line = ser.readline().decode('utf-8').strip() # Read a line, decode, and remove whitespace
@@ -59,12 +60,13 @@ def get_heartbeat(ser: serial.Serial, data_holding_dict: dict, button_clicked: i
             #         train[-1].append(int(hb_parts[-1]))
             #     time.sleep(0.1) # Small delay to prevent busy-waiting
 
-            if time.time() - data_holding_dict["start"] >= interval:
-                data_holding_dict["train"].append([])
-                data_holding_dict["start"] = time.time()
+            # if time.time() - data_holding_dict["start"] >= interval:
+            #     data_holding_dict["train"].append([])
+            #     data_holding_dict["start"] = time.time()
 
     except KeyboardInterrupt:
         print("Program terminated by user.")
+
     # finally:
     #     ser.close() # Close the serial port when done
     #     print("Serial port closed.")
@@ -81,12 +83,19 @@ def get_heartbeat(ser: serial.Serial, data_holding_dict: dict, button_clicked: i
             else:
                 data_holding_dict["train"][i - 1] = data_holding_dict["train"][i]
 
-    # # ideally make button_clicked an int/bool, depends on what's easier to get from frontend
-    # if button_clicked == 1:  # resting clicked
-    #     data_holding_dict["output"].extend([0] * 10)
-    # if button_clicked == 2:  # exercising clicked
-    #     data_holding_dict["output"].extend([1] * 10)
-
+    # ideally make button_clicked an int/bool, depends on what's easier to get from frontend
+    if button_clicked == 1:  # resting clicked
+        # data_holding_dict["output"].extend([0] * 10)
+        n_new_samples = len(data_holding_dict["train"]) - len(
+            data_holding_dict["output"]
+        )
+        data_holding_dict["output"].extend([0] * n_new_samples)
+    if button_clicked == 2:  # exercising clicked
+        # data_holding_dict["output"].extend([1] * 10)
+        n_new_samples = len(data_holding_dict["train"]) - len(
+            data_holding_dict["output"]
+        )
+        data_holding_dict["output"].extend([1] * n_new_samples)
     return data_holding_dict
 
 

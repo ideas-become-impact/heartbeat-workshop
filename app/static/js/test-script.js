@@ -5,12 +5,24 @@ const statusText = document.getElementById("exercise-status");
 const imgEl = document.getElementById("exercise-image");
 
 async function updateExerciseStatus() {
+    if (prediction_state) {
     try {
         const url = "/predict";
-        const response = await fetch(url);
-        const data = await response.json();
-        const value = data.exercise;
-
+        const heartbeat_data = await fetch("/arduino-read-data")
+                                     .then(data => data.json())
+                                     .then(data => data["data"])
+                                     .catch(err => console.error(err));
+        const response = await fetch(url, 
+            {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({"data": heartbeat_data})
+            }).then(data => data.json())
+              .then(data => data["state"])
+              .catch(err => console.error(err));
+        const value = response;
+        // const value = data.exercise;
+        console.log(value);
         if (value === 0) {
             statusText.textContent = "You are standing.";
             if (imgEl) {
@@ -38,6 +50,7 @@ async function updateExerciseStatus() {
         const imgEl = document.getElementById("exercise-image");
         if (imgEl) imgEl.style.display = "none";
     }
+}
 }
 
 async function can_predict() {

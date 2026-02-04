@@ -4,6 +4,7 @@ import random
 import numpy as np
 from heartbeat import get_heartbeat, run
 from heartbeat.model import predict
+from pprint import pprint
 import serial
 
 # import heartbeat.get_heartbeat
@@ -65,7 +66,7 @@ def data_route() -> Response:
 @app.route("/arduino-read-data", methods=["GET"])
 def arduino_read_data() -> Response:
 
-    new_data = get_heartbeat.get_latest_heartbeat(ser, 20, 0, 0.005)
+    new_data = get_heartbeat.get_latest_heartbeat(ser)
 
     return jsonify({"data": new_data})
 
@@ -103,6 +104,7 @@ def exercise_button() -> Response:
         # print(current_state)
         if current_state:
             exercise_dataset = run.exercise_button_clicked(ser, exercise_dataset)
+            # pprint(exercise_dataset)
             return jsonify({"data": exercise_dataset})
 
     return jsonify([])
